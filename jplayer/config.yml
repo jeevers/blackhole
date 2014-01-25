@@ -1,0 +1,3 @@
+media_path: /downloads/videos
+standalone: True
+port_listen: 8888

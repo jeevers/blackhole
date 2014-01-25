@@ -1,0 +1,58 @@
+
+$(document).ready(function() {
+	var volArray = new Array();
+	function showValues(){
+		var fields = $(".formdata").serializeArray()
+		$("#tbldata").empty();
+		jQuery.each(fields, function(i,field){
+			$("#tbldata").append("<td>" + field.value + "</td>");
+		});
+	};
+
+
+	var ws = new WebSocket("wss://192.168.15.105:8888/ws");
+	ws.onopen = function(evt) {
+		$("#results").append("<p>Connected</p>");
+	};
+	ws.onclose = function(evt) {
+		$("#results").append("<p>Disconnected</p>");
+	};
+	ws.onmessage = function(evt) {
+		$("#results").append("<p>message recieved: " + evt.data + "</p>");
+	};
+
+
+	$("select").change(showValues);
+	$("input").keyup(showValues).keyup();
+	showValues();
+
+	$("#new_line").click(function(evt) {
+		var aggr = $("#aggr").val();
+		var volname = $("#volname").val();
+		var size = $("#size").val();
+		var unit = $("#unit").val();
+		var voltype = $("#voltype").val();
+
+		var volJSON = { "aggr": aggr, "volname": volname, "size": size, "unit": unit, "voltype": voltype };
+		volArray.push(volJSON);
+
+		$("#voltable > tbody:last").append("<tr><td>"+aggr+"</td><td>"+volname+"</td><td>"+size+"</td><td>"+unit+"</td><td>"+voltype+"</td></tr>");
+	});
+
+	$("#create").click(function(evt) {
+		$("#results").append("<p>Sending volume information</p>");
+		ws.send(JSON.stringify(volArray));
+		volArray = [];
+		$("#voltable > tbody:last").empty();
+	});
+
+	$("#clear").click(function(evt) {
+		$("#results").append("<p>Table cleared</p>");
+		$("#voltable > tbody:last").empty();
+		volArray = [];
+	});
+
+	$("#clearOutput").click(function(evt) {
+		$("#results").empty();
+	});
+});
