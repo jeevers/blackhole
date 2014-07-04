@@ -1,0 +1,10 @@
+#filelist {
+   float: right;
+   overflow: auto;
+   height: 50%;
+}
+
+#jp_container_1 {
+   float: left;
+   position: fixed;
+}

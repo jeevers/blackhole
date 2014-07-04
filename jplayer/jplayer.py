@@ -38,6 +38,25 @@ class mainhandler(tornado.web.RequestHandler):
         self.render('main.tpl', filelist=filelist)
 
 
+class allinonehandler(tornado.web.RequestHandler):
+    def get(self):
+        #playerurl = "%s://%s/player" % (self.request.protocol,self.request.host)
+        playerurl = "/player"
+        path = getconfig()['media_path']
+        #mtime = lambda f: os.stat(os.path.join(path,f)).st_mtime
+        filelist = []
+        for dir in os.walk(path):
+            for filename in dir[2]:
+                print(filename)
+                fullpathfile = os.path.join(dir[0], filename)
+                filelist.append([filename,
+                                 playerurl + fullpathfile.replace(path,''),
+                                 time.ctime(os.stat(fullpathfile).st_mtime)]
+                                )
+        print(filelist)
+        self.render('allinone.tpl', filelist=filelist)
+
+
 class videohandler(tornado.web.RequestHandler):
     def get(self, video_path):
         filename = video_path.split('/')[-1]
@@ -63,7 +82,8 @@ if __name__ == '__main__':
 
     if getconfig()['standalone']:
         routes = [
-            (r'/', mainhandler),
+            (r'/', allinonehandler),
+            (r'/old', mainhandler),
             (r'/player/(.*)', videohandler),
             (r'/videos/(.*)', videoredirect),
             (r'/video_srv/(.*)', tornado.web.StaticFileHandler,
@@ -71,7 +91,8 @@ if __name__ == '__main__':
         ]
     else:
         routes = [
-            (r'/', mainhandler),
+            (r'/', allinonehandler),
+            (r'/old', mainhandler),
             (r'/player/(.*)', videohandler),
             (r'/videos/(.*)', videoredirect),
         ]

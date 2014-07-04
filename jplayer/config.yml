@@ -1,3 +1,3 @@
-media_path: /downloads/videos
+media_path: /home/jeevers/python/blackhole/jplayer/media
 standalone: True
-port_listen: 8888
+port_listen: 8900
