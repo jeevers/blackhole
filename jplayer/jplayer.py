@@ -41,7 +41,7 @@ class mainhandler(tornado.web.RequestHandler):
 class allinonehandler(tornado.web.RequestHandler):
     def get(self):
         #playerurl = "%s://%s/player" % (self.request.protocol,self.request.host)
-        playerurl = "/player"
+        playerurl = "/videos"
         path = getconfig()['media_path']
         #mtime = lambda f: os.stat(os.path.join(path,f)).st_mtime
         filelist = []
@@ -85,8 +85,8 @@ if __name__ == '__main__':
             (r'/', allinonehandler),
             (r'/old', mainhandler),
             (r'/player/(.*)', videohandler),
-            (r'/videos/(.*)', videoredirect),
-            (r'/video_srv/(.*)', tornado.web.StaticFileHandler,
+            #(r'/videos/(.*)', videoredirect),
+            (r'/videos/(.*)', tornado.web.StaticFileHandler,
              {'path': getconfig()['media_path']}),
         ]
     else:

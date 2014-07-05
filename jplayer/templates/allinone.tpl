@@ -27,7 +27,7 @@
         <tbody>
           {% for file in filelist %}
             <tr>
-              <td><a data-file-path={{ escape(file[1]) }}>{{ escape(file[0]) }}</a></td>
+              <td><a class="videoentry" data-file-path={{ escape(file[1]) }}>{{ escape(file[0]) }}</a></td>
               <td>{{ escape(file[2]) }}</td> 
             </tr>
           {% end %}
