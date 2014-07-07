@@ -1,3 +1,3 @@
-media_path: /home/jeevers/python_pract/blackhole/jplayer/media
+media_path: ./media
 standalone: True
 port_listen: 8900
