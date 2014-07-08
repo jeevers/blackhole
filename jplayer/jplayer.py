@@ -25,8 +25,10 @@ def generate_filelist(path, baseurl):
         for filename in dir[2]:
             #print(filename)
             fullpathfile = os.path.join(dir[0], filename)
+            rawfileurl =  baseurl + fullpathfile.replace(path,'')
+            fileurl = rawfileurl.replace(" ", "%20")
             files.append([filename,
-                            baseurl + fullpathfile.replace(path,''),
+                            fileurl,
                             time.ctime(os.stat(fullpathfile).st_mtime)]
                            )
     #print(files)
