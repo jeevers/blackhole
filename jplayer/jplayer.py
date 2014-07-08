@@ -18,43 +18,39 @@ def getconfig():
         config = yaml.load(configfile)
     return config
 
+def generate_filelist(path, baseurl):
+    files = []
+    #mtime = lambda f: os.stat(os.path.join(path,f)).st_mtime
+    for dir in os.walk(path):
+        for filename in dir[2]:
+            #print(filename)
+            fullpathfile = os.path.join(dir[0], filename)
+            files.append([filename,
+                            baseurl + fullpathfile.replace(path,''),
+                            time.ctime(os.stat(fullpathfile).st_mtime)]
+                           )
+    #print(files)
+    return files
+
 
 class mainhandler(tornado.web.RequestHandler):
     def get(self):
-        #playerurl = "%s://%s/player" % (self.request.protocol,self.request.host)
         playerurl = "/player"
-        path = getconfig()['media_path']
-        #mtime = lambda f: os.stat(os.path.join(path,f)).st_mtime
-        filelist = []
-        for dir in os.walk(path):
-            for filename in dir[2]:
-                print(filename)
-                fullpathfile = os.path.join(dir[0], filename)
-                filelist.append([filename,
-                                 playerurl + fullpathfile.replace(path,''),
-                                 time.ctime(os.stat(fullpathfile).st_mtime)]
-                                )
-        print(filelist)
-        self.render('main.tpl', filelist=filelist)
+        mediapath = getconfig()['media_path']
+        filelist = generate_filelist(mediapath, playerurl)
+        #sort the list by filename:
+        sorted_filelist = sorted(filelist, key=lambda x: x[0].upper())
+        self.render('main.tpl', filelist=sorted_filelist)
 
 
 class allinonehandler(tornado.web.RequestHandler):
     def get(self):
-        #playerurl = "%s://%s/player" % (self.request.protocol,self.request.host)
         playerurl = "/videos"
-        path = getconfig()['media_path']
-        #mtime = lambda f: os.stat(os.path.join(path,f)).st_mtime
-        filelist = []
-        for dir in os.walk(path):
-            for filename in dir[2]:
-                print(filename)
-                fullpathfile = os.path.join(dir[0], filename)
-                filelist.append([filename,
-                                 playerurl + fullpathfile.replace(path,''),
-                                 time.ctime(os.stat(fullpathfile).st_mtime)]
-                                )
-        print(filelist)
-        self.render('allinone.tpl', filelist=filelist)
+        mediapath = getconfig()['media_path']
+        filelist = generate_filelist(mediapath, playerurl)
+        #sort the list by filename:
+        sorted_filelist = sorted(filelist, key=lambda x: x[0].upper())
+        self.render('allinone.tpl', filelist=sorted_filelist)
 
 
 class videohandler(tornado.web.RequestHandler):
