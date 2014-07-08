@@ -4,4 +4,5 @@ lib/
 local/
 share/
 jplayer/media
+jplayer/static/videos
 *.pyc
