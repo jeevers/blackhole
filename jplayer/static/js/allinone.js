@@ -45,4 +45,10 @@ $(document).ready(function(){
        $("#playerfilename").text(filename);
        setTimeout(function(){$("#jquery_jplayer_1").jPlayer("play")},2000)
     });
+
+    var options = {
+       valueNames: [ 'name', 'date' ]
+    };
+    var filelist = new List('filelist', options);
 });
+

@@ -15,20 +15,23 @@
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.jplayer.min.js"></script>
     <script src="/static/js/allinone.js"></script>
+    <script src="/static/js/list.min.js"></script>
   </head>
   <body>
     <div id="filelist">
+      <input class="search" placeholder="Search" />
       <table>
         <thead>
           <tr>
-            <th>File</th><th>Date</th>
+            <th class="sort" data-sort="name">File</th>
+            <th class="sort" data-sort="date">Date</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="list">
           {% for file in filelist %}
             <tr>
-              <td><a class="videoentry" data-file-path={{ escape(file[1]) }}>{{ escape(file[0]) }}</a></td>
-              <td>{{ escape(file[2]) }}</td> 
+              <td class="name videoentry" data-file-path={{ escape(file[1]) }}>{{ escape(file[0]) }}</td>
+              <td class="date">{{ escape(file[2]) }}</td> 
             </tr>
           {% end %}
         </tbody>
