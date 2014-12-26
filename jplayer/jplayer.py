@@ -25,7 +25,10 @@ def generate_filelist(path, baseurl):
         for filename in dir[2]:
             #print(filename)
             fullpathfile = os.path.join(dir[0], filename)
-            rawfileurl = baseurl + fullpathfile.replace(path, '')
+            if path[-1] == '/':
+                rawfileurl = baseurl + fullpathfile.replace(path, '/')
+            else:
+                rawfileurl = baseurl + fullpathfile.replace(path, '')
             fileurl = rawfileurl.replace(" ", "%20")
             file_timestruct = time.localtime(os.stat(fullpathfile).st_mtime)
             filetime = time.strftime('%Y/%m/%d-%H:%M', file_timestruct)
@@ -54,7 +57,7 @@ class allinonehandler(tornado.web.RequestHandler):
         filelist = generate_filelist(mediapath, playerurl)
         #sort the list by filename:
         sorted_filelist = sorted(filelist, key=lambda x: x[0].upper())
-        self.render('allinone.tpl', filelist=sorted_filelist)
+        self.render('allinone-sidebar.html', filelist=sorted_filelist)
 
 
 class videohandler(tornado.web.RequestHandler):

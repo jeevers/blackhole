@@ -1,13 +1,16 @@
 #filelist {
-   float: right;
    overflow: auto;
-   height: 50%;
 }
 
 #jp_container_1 {
-   float: left;
-   position: fixed;
+   width: 720px;
+   height: 500px;
 }
 div.jp-video-405p {
    width: 720px;
+}
+
+.namewidth {
+   max-width: 300px;
+   word-break: break-all;
 }
