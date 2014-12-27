@@ -2,10 +2,11 @@
    overflow: auto;
 }
 
-#jp_container_1 {
+/*#jp_container_1 {
    width: 720px;
    height: 500px;
-}
+}*/
+
 div.jp-video-405p {
    width: 720px;
 }

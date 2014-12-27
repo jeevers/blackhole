@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#from sh import nmap
 import tornado.httpserver
 #import tornado.websocket
 import tornado.ioloop
@@ -8,9 +7,11 @@ import time
 #import multiprocessing
 import signal
 import os
+import mimetypes
 #import re
 import yaml
 
+SUPPORTED_FILETYPES = ['video/mp4', 'video/x-flv']
 
 def getconfig():
     with open(os.path.join(os.path.dirname(__file__),
@@ -25,18 +26,20 @@ def generate_filelist(path, baseurl):
         for filename in dir[2]:
             #print(filename)
             fullpathfile = os.path.join(dir[0], filename)
-            if path[-1] == '/':
-                rawfileurl = baseurl + fullpathfile.replace(path, '/')
-            else:
-                rawfileurl = baseurl + fullpathfile.replace(path, '')
-            fileurl = rawfileurl.replace(" ", "%20")
-            file_timestruct = time.localtime(os.stat(fullpathfile).st_mtime)
-            filetime = time.strftime('%Y/%m/%d-%H:%M', file_timestruct)
-            files.append([filename,
-                            fileurl,
-                            filetime]
-                           )
-    #print(files)
+            filetype = mimetypes.guess_type(fullpathfile)[0]
+            if filetype in SUPPORTED_FILETYPES:
+                if path[-1] == '/':
+                    rawfileurl = baseurl + fullpathfile.replace(path, '/')
+                else:
+                    rawfileurl = baseurl + fullpathfile.replace(path, '')
+                fileurl = rawfileurl.replace(" ", "%20")
+                file_timestruct = time.localtime(os.stat(fullpathfile).st_mtime)
+                filetime = time.strftime('%Y/%m/%d-%H:%M', file_timestruct)
+                files.append([filename,
+                                fileurl,
+                                filetime]
+                               )
+        #print(files)
     return files
 
 
